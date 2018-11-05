@@ -1,31 +1,20 @@
-name: $(BuildID)
-
 steps:
 
-  - task: DotNetCoreCLI@2
-    displayName: Build Code
-    inputs:
-      projects: src/EmptyApp.sln
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: src/EmptyApp.zip
+    arguments: --configuration $(BuildConfiguration)
 
-  - task: DotNetCoreCLI@2
-    displayName: Package Binaries
-    inputs:
-      command: publish
-      publishWebProjects: true
-      projects: src/*.csproj
-      arguments: --output $(Build.ArtifactStagingDirectory)/MyApp --no-restore
-  
-  - task: ArchiveFiles@2
-    displayName: Create Zip File
-    inputs:
-      rootFolderOrFile: $(Build.ArtifactStagingDirectory)/MyApp
-      includeRootFolder: false
-      archiveFile: $(Build.ArtifactStagingDirectory)/MyApp.zip
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: --configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)
+    zipAfterPublish: True
 
-  - task: PublishBuildArtifacts@1
-    displayName: Publish App
-    inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp.zip
-      artifactName: myapp
-      artifactType: container
- 
+- task: PublishBuildArtifacts@1
+  displayName: Publish Artifact
+  inputs:
+    PathToPublish: $(build.artifactstagingdirectory)
