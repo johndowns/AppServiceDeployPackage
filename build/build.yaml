@@ -12,8 +12,8 @@ steps:
     inputs:
       command: publish
       publishWebProjects: false
-      projects: 'src/**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
+      projects: 'src/*.csproj'
+      arguments: '--output $(Build.ArtifactStagingDirectory) --no-restore'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish App
