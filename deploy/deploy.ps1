@@ -2,10 +2,10 @@ $storageContext = New-AzureStorageContext -StorageAccountName $env:StorageAccoun
 
 $containerName = 'packages'
 $guid = [guid]::NewGuid()
-$blobName = "$env:Build_DefinitionName/$env:Build_BuildId-$guid.zip"
+$blobName = "$env:Build_DefinitionName/$env:Build_BuildNumber-$guid.zip"
 $expiry = (Get-Date).AddYears(100)
 
-$filePath = [io.path]::combine($env:Agent_ReleaseDirectory, $env:Build_DefinitionName, 'EmptyApp.zip')
+$filePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $env:Build_DefinitionName, 'app', 'EmptyApp.zip')
 
 Write-Host $filePath
 
