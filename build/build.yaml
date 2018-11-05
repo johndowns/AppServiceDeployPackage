@@ -16,4 +16,9 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: Publish Artifact
   inputs:
-    PathToPublish: $(build.artifactstagingdirectory)
+    pathToPublish: $(build.artifactstagingdirectory)
+
+- task: PublishBuildArtifacts@1
+  displayName: Publish Deployment Scripts
+  inputs:
+    pathToPublish: deploy
