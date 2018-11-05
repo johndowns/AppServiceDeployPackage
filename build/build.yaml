@@ -5,21 +5,22 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: Build Code
     inputs:
-      projects: 'src/EmptyApp.sln'
+      projects: src/EmptyApp.sln
 
   - task: DotNetCoreCLI@2
     displayName: Package Binaries
     inputs:
       command: publish
       publishWebProjects: true
-      projects: 'src/*.csproj'
-      arguments: '--output $(Build.ArtifactStagingDirectory)/MyApp --no-restore'
+      projects: src/*.csproj
+      arguments: --output $(Build.ArtifactStagingDirectory)/MyApp --no-restore
   
   - task: ArchiveFiles@2
     displayName: Create Zip File
     inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/MyApp'
+      rootFolderOrFile: $(Build.ArtifactStagingDirectory)/MyApp
       includeRootFolder: false
+      archiveFile: $(Build.ArtifactStagingDirectory)/MyApp.zip
 
   - task: PublishBuildArtifacts@1
     displayName: Publish App
