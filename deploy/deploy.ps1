@@ -1,26 +1,18 @@
+$sourceAlias = '_Packages-CI'
+$resourceGroupName = 'MyResourceGroup'
+
 $storageContext = New-AzureStorageContext -StorageAccountName $env:StorageAccountName -StorageAccountKey $env:StorageAccountKey
 
 $containerName = 'packages'
 $guid = [guid]::NewGuid()
 $blobName = "$env:Build_DefinitionName/$env:Build_BuildNumber-$guid.zip"
-$sourceAlias = '_Packages-CI'
 $expiry = (Get-Date).AddYears(100)
 
-$filePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 'app', 'EmptyApp.zip')
-
-Write-Host $filePath
-
-Write-Host $blobName
-
-Set-AzureStorageBlobContent -File $filePath -Container $containerName -Blob $blobName -Context $storageContext
-
+$appPackagePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 'app', 'EmptyApp.zip')
+Set-AzureStorageBlobContent -File $appPackagePath -Container $containerName -Blob $blobName -Context $storageContext
 $blobSasUrl = New-AzureStorageBlobSASToken -Container $containerName -Context $storageContext -Blob $blobName -ExpiryTime $expiry -Permission r -FullUri
 
-Write-Host $blobSasUrl
-
-
-
-
-#New-AzureStorageBlobSASToken
-
-#New-AzureRmResourceGroupDeployment -TemplateParameterFile template-app.json
+$appPackagePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 'deploy', 'template-app.json')
+$armDeploymentParameters = @{}
+$armDeploymentParameters.Add('packageUrl', $blobSasUrl)
+New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile template-app.json -TemplateParameterObject $armDeploymentParameters
