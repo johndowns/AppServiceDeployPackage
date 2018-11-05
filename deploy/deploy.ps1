@@ -12,7 +12,7 @@ $appPackagePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 
 Set-AzureStorageBlobContent -File $appPackagePath -Container $containerName -Blob $blobName -Context $storageContext
 $blobSasUrl = New-AzureStorageBlobSASToken -Container $containerName -Context $storageContext -Blob $blobName -ExpiryTime $expiry -Permission r -FullUri
 
-$appPackagePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 'deploy', 'template-app.json')
+$armTemplatePath = [IO.Path]::Combine($env:Agent_ReleaseDirectory, $sourceAlias, 'deploy', 'template-app.json')
 $armDeploymentParameters = @{}
 $armDeploymentParameters.Add('packageUrl', $blobSasUrl)
-New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile template-app.json -TemplateParameterObject $armDeploymentParameters
+New-AzureRmResourceGroupDeployment -ResourceGroupName $resourceGroupName -TemplateFile $armTemplatePath -TemplateParameterObject $armDeploymentParameters
