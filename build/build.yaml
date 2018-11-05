@@ -1,0 +1,24 @@
+name: $(BuildID)
+
+steps:
+
+  - task: DotNetCoreCLI@2
+    displayName: Build Code
+    inputs:
+      projects: 'src/EmptyApp.sln'
+
+  - task: DotNetCoreCLI@2
+    displayName: Package Binaries
+    inputs:
+      command: publish
+      publishWebProjects: false
+      projects: 'src/**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
+
+  - task: PublishBuildArtifacts@1
+    displayName: Publish App
+    inputs:
+      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp.zip
+      artifactName: myapp
+      artifactType: container
+ 

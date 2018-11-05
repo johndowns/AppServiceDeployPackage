@@ -1,0 +1,44 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "variables": {
+        "storageAccountName": "[uniqueString(subscription().subscriptionId, resourceGroup().name)]",
+        "containerName": "packages"
+    },
+    "resources": [
+        {
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "kind": "StorageV2",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "accessTier": "Hot"
+            },
+            "resources": [
+                {
+                    "name": "[concat('default/', variables('containerName'))]",
+                    "type": "blobServices/containers",
+                    "apiVersion": "2018-03-01-preview",
+                    "dependsOn": [
+                        "[variables('storageAccountName')]"
+                    ]
+                }
+            ]
+        }
+    ],
+    "outputs": {
+        "storageAccountName": {
+            "type": "string",
+            "value": "[variables('storageAccountName')]"
+        },
+        "storageAccountKey": {
+            "type": "string",
+            "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')),'2015-05-01-preview').key1]"
+        }
+    }
+}
