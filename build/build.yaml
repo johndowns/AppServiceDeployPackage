@@ -11,7 +11,7 @@ steps:
     displayName: Package Binaries
     inputs:
       command: publish
-      publishWebProjects: false
+      publishWebProjects: true
       projects: 'src/*.csproj'
       arguments: '--output $(Build.ArtifactStagingDirectory) --no-restore'
 
