@@ -18,7 +18,7 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: Publish App
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp.zip
+      pathToPublish: $(Build.ArtifactStagingDirectory)/EmptyApp.zip
       artifactName: myapp
       artifactType: container
  
