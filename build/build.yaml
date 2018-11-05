@@ -14,11 +14,17 @@ steps:
       publishWebProjects: true
       projects: 'src/*.csproj'
       arguments: '--output $(Build.ArtifactStagingDirectory)/MyApp --no-restore'
+  
+  - task: ArchiveFiles@2
+    displayName: Create Zip File
+    inputs:
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/MyApp'
+      includeRootFolder: false
 
   - task: PublishBuildArtifacts@1
     displayName: Publish App
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp
+      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp.zip
       artifactName: myapp
       artifactType: container
  
