@@ -13,12 +13,12 @@ steps:
       command: publish
       publishWebProjects: true
       projects: 'src/*.csproj'
-      arguments: '--output $(Build.ArtifactStagingDirectory) --no-restore'
+      arguments: '--output $(Build.ArtifactStagingDirectory)/MyApp --no-restore'
 
   - task: PublishBuildArtifacts@1
     displayName: Publish App
     inputs:
-      pathToPublish: $(Build.ArtifactStagingDirectory)
+      pathToPublish: $(Build.ArtifactStagingDirectory)/MyApp
       artifactName: myapp
       artifactType: container
  
