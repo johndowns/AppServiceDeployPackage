@@ -5,7 +5,7 @@ $guid = [guid]::NewGuid()
 $blobName = "$env:Build__DefinitionName/$env:Build__BuildId-$guid.zip"
 $expiry = (Get-Date).AddYears(100)
 
-$filePath = Join-Path $env:Agent_ReleaseDirectory $env:Build__DefinitionName EmptyApp.zip
+$filePath = [io.path]::combine($env:Agent_ReleaseDirectory, $env:Build__DefinitionName, 'EmptyApp.zip')
 
 Write-Host $filePath
 
