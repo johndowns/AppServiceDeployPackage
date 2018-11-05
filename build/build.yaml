@@ -3,7 +3,7 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: src/EmptyApp.sln
+    projects: src/EmptyApp/EmptyApp.sln
 
 - task: DotNetCoreCLI@2
   displayName: Publish
