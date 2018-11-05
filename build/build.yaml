@@ -17,8 +17,12 @@ steps:
   displayName: Publish Artifact
   inputs:
     pathToPublish: $(build.artifactstagingdirectory)
+    artifactName: app
+    artifactType: container
 
 - task: PublishBuildArtifacts@1
   displayName: Publish Deployment Scripts
   inputs:
     pathToPublish: deploy
+    artifactName: deploy
+    artifactType: container

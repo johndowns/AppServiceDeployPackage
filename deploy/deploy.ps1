@@ -1,11 +1,15 @@
-$storageContext = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+$storageContext = New-AzureStorageContext -StorageAccountName $env:StorageAccountName -StorageAccountKey $env:StorageAccountKey
 
 $containerName = 'packages'
 $guid = [guid]::NewGuid()
 $blobName = "$env:Build__DefinitionName/$env:Build__BuildId-$guid.zip"
 $expiry = (Get-Date).AddYears(100)
 
-$filePath = '/Users/johndowns/Desktop/file.zip'
+$filePath = Join-Path $env:Agent_ReleaseDirectory $env:Build__DefinitionName EmptyApp.zip
+
+Write-Host $filePath
+
+Write-Host $blobName
 
 Set-AzureStorageBlobContent -File $filePath -Container $containerName -Blob $blobName -Context $storageContext
 
