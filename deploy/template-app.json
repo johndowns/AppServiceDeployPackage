@@ -18,10 +18,10 @@
             "apiVersion": "2015-08-01",
             "kind": "app",
             "sku": {
-                "name": "S1",
-                "tier": "Standard",
-                "size": "S1",
-                "family": "S",
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
                 "capacity": 1
             },
             "properties": {
@@ -37,10 +37,23 @@
             "kind": "web",
             "properties": {
                 "name": "[variables('appName')]",
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', variables('apiAppServicePlanName'))]"
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+            ],
+            "resources": [
+                {
+                  "name": "appsettings",
+                  "type": "config",
+                  "apiVersion": "2014-11-01",
+                  "properties": {
+                    "WEBSITE_RUN_FROM_PACKAGE": "[parameters('packageUrl')]"
+                  },
+                  "dependsOn": [
+                    "[variables('appName')]"
+                  ]
+                }
             ]
         }
     ]
